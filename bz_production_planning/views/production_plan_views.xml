@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="bz_production_plan_view_list" model="ir.ui.view">
+        <field name="name">bz.production.plan.list</field>
+        <field name="model">bz.production.plan</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="total_qty" sum="Total"/>
+                <field name="production_count" string="MOs"/>
+                <field name="progress" widget="progressbar"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'confirmed'"
+                       decoration-success="state == 'done'"
+                       decoration-muted="state == 'cancel'"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="bz_production_plan_view_form" model="ir.ui.view">
+        <field name="name">bz.production.plan.form</field>
+        <field name="model">bz.production.plan</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_generate_productions" type="object"
+                            string="Generate Manufacturing Orders" class="btn-primary"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_done" type="object" string="Mark as Done"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state not in ('draft', 'confirmed')"/>
+                    <button name="action_draft" type="object" string="Reset to Draft"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_productions" type="object"
+                                class="oe_stat_button" icon="fa-wrench"
+                                invisible="production_count == 0">
+                            <field name="production_count" widget="statinfo" string="Manufacturing"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_start" readonly="state != 'draft'"/>
+                            <field name="date_end" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="progress" widget="progressbar"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="lines">
+                            <field name="line_ids" readonly="state in ('done', 'cancel')">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="product_tmpl_id" column_invisible="True"/>
+                                    <field name="bom_id"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id"/>
+                                    <field name="date_planned"/>
+                                    <field name="production_id" optional="show"/>
+                                    <field name="production_state" widget="badge" optional="show"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="total_qty"/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="note" placeholder="Goals, constraints or remarks for this plan..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="bz_production_plan_view_search" model="ir.ui.view">
+        <field name="name">bz.production.plan.search</field>
+        <field name="model">bz.production.plan</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="line_ids" string="Product" filter_domain="[('line_ids.product_id', 'ilike', self)]"/>
+                <field name="user_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter name="my_plans" string="My Plans" domain="[('user_id', '=', uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_user" string="Responsible" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_month" string="Start Month" context="{'group_by': 'date_start:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="bz_production_plan_action" model="ir.actions.act_window">
+        <field name="name">Production Plans</field>
+        <field name="res_model">bz.production.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="bz_production_plan_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first production plan</p>
+            <p>List the products to manufacture in a period, then generate every manufacturing order in one click.</p>
+        </field>
+    </record>
+</odoo>

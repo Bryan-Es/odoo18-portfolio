@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_bz_summary" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.bz.summary</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="bz_delivery_deadline"/>
+                <field name="bz_sale_channel"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="after">
+                <field name="bz_line_note" optional="show"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Internal Note" name="bz_internal_note">
+                    <field name="bz_internal_note" placeholder="Notes for your team. Not printed for the customer."/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_quotation_tree_inherit_bz_summary" model="ir.ui.view">
+        <field name="name">sale.order.quotation.list.inherit.bz.summary</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="before">
+                <field name="bz_sale_channel" optional="show"/>
+                <field name="bz_delivery_deadline" optional="show"/>
+                <field name="bz_days_to_deadline" optional="show"
+                       invisible="not bz_delivery_deadline"
+                       decoration-danger="bz_days_to_deadline &lt; 0"
+                       decoration-warning="bz_days_to_deadline &gt;= 0 and bz_days_to_deadline &lt;= 2"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_tree_inherit_bz_summary" model="ir.ui.view">
+        <field name="name">sale.order.list.inherit.bz.summary</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="before">
+                <field name="bz_sale_channel" optional="show"/>
+                <field name="bz_delivery_deadline" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter_inherit_bz_summary" model="ir.ui.view">
+        <field name="name">sale.order.search.inherit.bz.summary</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <filter name="bz_deadline_set" string="With Deadline"
+                        domain="[('bz_delivery_deadline', '!=', False)]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter name="bz_group_channel" string="Sales Channel"
+                        context="{'group_by': 'bz_sale_channel'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

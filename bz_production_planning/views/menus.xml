@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="bz_production_plan_menu"
+              name="Production Plans"
+              parent="mrp.menu_mrp_root"
+              action="bz_production_plan_action"
+              groups="mrp.group_mrp_user"
+              sequence="15"/>
+</odoo>
