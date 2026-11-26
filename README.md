@@ -44,7 +44,25 @@ Requisitos: Odoo 18.0. `bz_production_planning` necesita Fabricación (`mrp`) y 
 
 ### Capturas
 
-Ver la carpeta [`docs/screenshots`](docs/screenshots).
+Plan de producción con órdenes de fabricación generadas:
+
+![Formulario del plan de producción](docs/screenshots/production_plan_form.png)
+
+Lista de planes con avance:
+
+![Lista de planes](docs/screenshots/production_plan_list.png)
+
+Cotización con fecha límite, canal de venta y nota por línea:
+
+![Campos extra en la cotización](docs/screenshots/sale_order_fields.png)
+
+Días restantes resaltados en la lista de cotizaciones:
+
+![Lista de cotizaciones](docs/screenshots/sale_quotations_list.png)
+
+Reporte PDF "Sales Summary":
+
+![Reporte PDF](docs/screenshots/sale_summary_pdf.png)
 
 ### Contacto
 
@@ -93,7 +111,27 @@ Requirements: Odoo 18.0. `bz_production_planning` needs Manufacturing (`mrp`) an
 
 ### Screenshots
 
-See [`docs/screenshots`](docs/screenshots).
+Production plan with generated manufacturing orders:
+
+![Production plan form](docs/screenshots/production_plan_form.png)
+
+Plan list with progress:
+
+![Production plan list](docs/screenshots/production_plan_list.png)
+
+Quotation with deadline, sales channel and line notes:
+
+![Extra quotation fields](docs/screenshots/sale_order_fields.png)
+
+Days left highlighted in the quotation list:
+
+![Quotation list](docs/screenshots/sale_quotations_list.png)
+
+"Sales Summary" PDF report:
+
+![PDF report](docs/screenshots/sale_summary_pdf.png)
+
+Screenshots use demo data from a test database.
 
 ### Contact
 
