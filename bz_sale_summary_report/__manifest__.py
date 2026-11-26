@@ -12,7 +12,7 @@ Adds practical fields to quotations and sales orders and a printable summary.
 * "Sales Summary" PDF report built with QWeb and the company layout.
     """,
     "author": "Bryan Esparza",
-    "website": "https://github.com/",
+    "website": "https://github.com/Bryan-Es/odoo18-portfolio",
     "license": "LGPL-3",
     "depends": ["sale_management"],
     "data": [

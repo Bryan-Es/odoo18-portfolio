@@ -12,7 +12,7 @@ Simplified production planning for small and medium manufacturers.
 * Track the progress of every manufacturing order from the plan.
     """,
     "author": "Bryan Esparza",
-    "website": "https://github.com/",
+    "website": "https://github.com/Bryan-Es/odoo18-portfolio",
     "license": "LGPL-3",
     "depends": ["mrp"],
     "data": [
